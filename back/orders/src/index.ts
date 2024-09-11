@@ -3,6 +3,11 @@ import "./db.setup";
 import { Order } from "./models/orders";
 
 const app = new Elysia()
+  .get(
+    "/",
+    ({ headers }) =>
+      "Hello from Elysia! here are the headers: " + JSON.stringify(headers),
+  )
   .group("/orders", (app) =>
     app
       // list all orders
@@ -11,7 +16,7 @@ const app = new Elysia()
       .get(
         "/",
         ({ query, headers }) => {
-          const role = headers["X-Role"]; // "user" || "admin" || "kitchen";
+          const role = headers["X-Role"];
           const userId = headers["X-User"];
 
           return Order.find({
@@ -23,7 +28,14 @@ const app = new Elysia()
           query: t.Object({
             status: t.String(),
           }),
-          headers: t.Object({ "X-Role": t.String(), "X-User": t.String() }),
+          headers: t.Object({
+            "X-Role": t.Enum({
+              admin: "admin",
+              user: "user",
+              kitchen: "kitchen",
+            }),
+            "X-User": t.String(),
+          }),
           error({ error }) {
             //todo: handle error
             return error;
@@ -31,13 +43,36 @@ const app = new Elysia()
         },
       )
       // create a new order, store it and request the other services to process it
-      .post("/", (req) => `Create order ${req.body.name}`)
+      .post("/", ({ body }) => `Create order ${body.name}`, {
+        body: t.Object({
+          name: t.String(),
+        }),
+      })
       // get a specific order
-      .get("/:id", (req) => `Order ${req.params.id}`)
+      .get("/:id", ({ params }) => Order.findById(params.id), {
+        params: t.Object({
+          id: t.String(),
+        }),
+      })
       // update an order
-      .put("/:id", (req) => `Update order ${req.params.id}`)
+      .put(
+        "/:id",
+        ({ params, body }) => Order.findByIdAndUpdate(params.id, body),
+        {
+          params: t.Object({
+            id: t.String(),
+          }),
+          body: t.Object({
+            name: t.String(),
+          }),
+        },
+      )
       // delete an order
-      .delete("/:id", (req) => `Delete order ${req.params.id}`),
+      .delete("/:id", ({ params }) => Order.findByIdAndDelete(params.id), {
+        params: t.Object({
+          id: t.String(),
+        }),
+      }),
   )
   .listen(3000);
 

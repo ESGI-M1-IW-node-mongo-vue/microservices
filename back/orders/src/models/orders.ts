@@ -14,6 +14,7 @@ export const orderSchema = new Schema<IOrder>({
   address: { type: String, required: true },
   status: { type: String, required: true },
   total: { type: Number, required: true },
+  client: { type: String, required: true },
 });
 
 export const Order = model<IOrder>("orders", orderSchema);
