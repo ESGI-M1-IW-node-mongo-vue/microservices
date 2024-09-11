@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  front:
+    build:
+      args:
+        NODE_ENV: ${NODE_ENV:-dev}
+      context: ./front
+    container_name: front
+    volumes:
+      - ./front/:/app/
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+  nginx:
+    image: ghcr.io/max-lt/nginx-jwt-module:latest
+    platform: linux/x86_64
+    container_name: nginx
+    volumes:
+      - ./back/gateway/:/etc/nginx/
+    network_mode: host
+  orders:
+    build:
+      context: ./back/orders
+    container_name: orders
+    volumes:
+      - ./back/orders/:/app/
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+
