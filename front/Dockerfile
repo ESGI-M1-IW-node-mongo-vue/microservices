@@ -1,11 +1,12 @@
-FROM node:lts-alpine
+FROM oven/bun:1.1.30-alpine
 
 ENV NODE_ENV=development
 WORKDIR /app
 
-COPY package*.json ./
+COPY . .
 
-RUN npm install
+RUN bun install
+
+CMD [ "bun","dev" ]
 
 EXPOSE 5173
-CMD [ "npm", "run", "dev" ]

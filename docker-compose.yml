@@ -1,5 +1,12 @@
 version: '3.8'
 services:
+  auth:
+    build:
+      context: ./back/auth
+    container_name: auth
+    volumes:
+      - ./back/auth/:/app/
+      - /app/node_modules
   front:
     build:
       args:
@@ -9,15 +16,20 @@ services:
     volumes:
       - ./front/:/app/
       - /app/node_modules
-    ports:
-      - "5173:5173"
   nginx:
     image: ghcr.io/max-lt/nginx-jwt-module:latest
     platform: linux/x86_64
     container_name: nginx
     volumes:
       - ./back/gateway/:/etc/nginx/
-    network_mode: host
+    links:
+      - auth
+      - orders
+      - livraison
+      - kitchen
+      - front
+    ports:
+        - "80:80"
   orders:
     build:
       context: ./back/orders
@@ -25,6 +37,18 @@ services:
     volumes:
       - ./back/orders/:/app/
       - /app/node_modules
-    ports:
-      - "3000:3000"
+  livraison:
+    build:
+      context: ./back/livraison
+    container_name: livraison
+    volumes:
+      - ./back/livraison/:/app/
+      - /app/node_modules
+  kitchen:
+    build:
+      context: ./back/kitchen
+    container_name: kitchen
+    volumes:
+      - ./back/kitchen/:/app/
+      - /app/node_modules
 
