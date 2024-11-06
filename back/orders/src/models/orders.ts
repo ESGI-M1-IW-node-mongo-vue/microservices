@@ -10,6 +10,7 @@ export interface IOrder {
 }
 
 export const orderSchema = new Schema<IOrder>({
+  //@ts-expect-error hazoul this will be valid
   dishes: { type: Schema.Types.ObjectId, ref: "dishes", required: true },
   address: { type: String, required: true },
   status: { type: String, required: true },
