@@ -12,9 +12,6 @@ services:
         NODE_ENV: ${NODE_ENV:-dev}
       context: ./front
     container_name: front
-    volumes:
-      - ./front/:/app/
-      - /app/node_modules
   nginx:
     image: ghcr.io/max-lt/nginx-jwt-module:latest
     platform: linux/x86_64
