@@ -10,7 +10,7 @@ const formData = ref({
 
 const handleSubmit = async () => {
   try {
-    const response = await fetch("http://localhost:80/api/auth/register", {
+    const response = await fetch("http://localhost:8000/auth/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

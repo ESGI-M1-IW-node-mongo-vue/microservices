@@ -1,4 +1,8 @@
 _format_version: "1.1"
+
+consumers:
+  - username: auth-user  # Crée un consumer pour le service d'authentification
+
 services:
   - name: auth-service
     url: http://host.docker.internal:3000
@@ -6,6 +10,7 @@ services:
       - name: auth-route
         paths:
           - /auth
+        strip_path: true
 
   - name: order-service
     url: http://host.docker.internal:3001
@@ -13,6 +18,19 @@ services:
       - name: order-route
         paths:
           - /order
+    plugins:
+      - name: jwt
+        config:
+          key_claim_name: "iss"  # Utilise `iss` comme identifiant unique
+          secret_is_base64: false
+          claims_to_verify:
+            - exp  # Vérifie uniquement le claim `exp` pour expiration
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "X-User: {{jwt_claim_sub}}"  # Ajoute `sub` comme header X-User
+              - "X-Role: {{jwt_claim_role}}"  # Ajoute `role` comme header X-Role
 
   - name: livraison-service
     url: http://host.docker.internal:3002
@@ -20,6 +38,19 @@ services:
       - name: livraison-route
         paths:
           - /livraison
+    plugins:
+      - name: jwt
+        config:
+          key_claim_name: "iss"
+          secret_is_base64: false
+          claims_to_verify:
+            - exp
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "X-User: {{jwt_claim_sub}}"
+              - "X-Role: {{jwt_claim_role}}"
 
   - name: kitchen-service
     url: http://host.docker.internal:3003
@@ -27,3 +58,23 @@ services:
       - name: dishes-route
         paths:
           - /kitchen
+    plugins:
+      - name: jwt
+        config:
+          key_claim_name: "iss"
+          secret_is_base64: false
+          claims_to_verify:
+            - exp
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "X-User: {{jwt_claim_sub}}"
+              - "X-Role: {{jwt_claim_role}}"
+
+# JWT Credentials pour le Consumer
+jwt_secrets:
+  - consumer: auth-user
+    key: auth  # Le claim `iss` doit être "auth" dans le JWT pour ce consumer
+    secret: pouetpouetpouet  # Clé secrète pour signer le token JWT
+    algorithm: HS256  # Algorithme de signature du JWT
