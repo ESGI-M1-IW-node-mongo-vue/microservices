@@ -21,6 +21,7 @@ app.use("/api/*", cors({
 app.route("/api", order);
 
 serve({
+  hostname: '0.0.0.0',
   fetch: app.fetch,
   port
 })
