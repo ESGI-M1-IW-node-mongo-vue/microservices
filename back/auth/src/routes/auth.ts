@@ -5,6 +5,10 @@ import {guard} from "../../middlewares/auth";
 
 const api = new Hono().basePath("/auth");
 
+api.get("/", (c) => {
+    return c.json("Hello World");
+});
+
 //get user by id
 api.get("/me",guard,async (c) => {
   try {
