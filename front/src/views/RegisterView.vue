@@ -22,7 +22,6 @@ const handleSubmit = () => {
     return
   }
 
-  // Handle registration logic here
   console.log('Form submitted:', formData.value)
 }
 </script>
@@ -30,8 +29,9 @@ const handleSubmit = () => {
 <template>
   <div class="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <img class="mx-auto h-24 w-auto" src="../assets/logo.png" alt="Your Company" />
       <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight light:text-gray-900 dark:text-gray-200">
-        Create your account
+        Création de compte
       </h2>
     </div>
 
@@ -40,7 +40,7 @@ const handleSubmit = () => {
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label for="firstName" class="block text-sm font-medium light:text-gray-900 dark:text-gray-200">
-              First name
+              Prénom
             </label>
             <div class="mt-2">
               <input
@@ -55,7 +55,7 @@ const handleSubmit = () => {
 
           <div>
             <label for="lastName" class="block text-sm font-medium light:text-gray-900 dark:text-gray-200">
-              Last name
+              Nom
             </label>
             <div class="mt-2">
               <input
@@ -71,7 +71,7 @@ const handleSubmit = () => {
 
         <div>
           <label for="email" class="block text-sm font-medium light:text-gray-900 dark:text-gray-200">
-            Email address
+            Email
           </label>
           <div class="mt-2">
             <input
@@ -87,7 +87,7 @@ const handleSubmit = () => {
 
         <div>
           <label for="password" class="block text-sm font-medium light:text-gray-900 dark:text-gray-200">
-            Password
+            Mot de passe
           </label>
           <div class="mt-2">
             <input
@@ -102,38 +102,19 @@ const handleSubmit = () => {
         </div>
 
         <div>
-          <label for="confirmPassword" class="block text-sm font-medium light:text-gray-900 dark:text-gray-200">
-            Confirm password
-          </label>
-          <div class="mt-2">
-            <input
-                id="confirmPassword"
-                v-model="formData.confirmPassword"
-                type="password"
-                autocomplete="new-password"
-                required
-                class="block w-full rounded-md border-0 py-1.5 light:text-gray-900 dark:text-gray-200 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            />
-          </div>
-          <p v-if="passwordError" class="mt-2 text-sm text-red-600">
-            {{ passwordError }}
-          </p>
-        </div>
-
-        <div>
           <button
               type="submit"
               class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Register
+            Création
           </button>
         </div>
       </form>
 
       <p class="mt-10 text-center text-sm text-gray-500">
-        Already have an account?
-        <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-          Sign in here
+        Vous avez déjà un compte ?
+        <a href="/login" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          Connectez-vous !
         </a>
       </p>
     </div>

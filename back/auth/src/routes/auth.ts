@@ -5,6 +5,10 @@ import {guard} from "../../middlewares/auth";
 
 const api = new Hono().basePath("/auth");
 
+api.get("/", (c) => {
+    return c.json("Hello World");
+});
+
 //get user by id
 api.get("/me",guard,async (c) => {
   try {
@@ -47,7 +51,7 @@ api.post("/login", async (c) => {
     const payload = {
       sub: user._id,
       role: "user",
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // Token expires in 24 hours
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
     };
     const secret = "pouetpouetpouet";
     const token = await sign(payload, secret);

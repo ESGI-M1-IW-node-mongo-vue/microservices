@@ -15,7 +15,8 @@ app.use("/api/*", cors());
 app.route("/api", auth);
 
 app.all("*", (c) => {
-  return c.json({ msg: "404 oups" });
+  console.log('👋', c.req.url);
+  return c.json({ msg: c.req.url });
 });
 
 serve({
