@@ -5,5 +5,25 @@ services:
     routes:
       - name: auth-route
         paths:
-          - /api/auth
-        strip_path: false
+          - /auth
+
+  - name: order-service
+    url: http://host.docker.internal:3001
+    routes:
+      - name: order-route
+        paths:
+          - /order
+
+  - name: livraison-service
+    url: http://host.docker.internal:3002
+    routes:
+      - name: livraison-route
+        paths:
+          - /livraison
+
+  - name: kitchen-service
+    url: http://host.docker.internal:3003
+    routes:
+      - name: dishes-route
+        paths:
+          - /kitchen
