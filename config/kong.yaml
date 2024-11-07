@@ -11,6 +11,10 @@ services:
         paths:
           - /auth
         strip_path: true
+    plugins:
+      - name: cors
+        config:
+          origins: [ "*" ]
 
   - name: order-service
     url: http://host.docker.internal:3001
@@ -19,6 +23,9 @@ services:
         paths:
           - /order
     plugins:
+      - name: cors
+        config:
+          origins: [ "*" ]
       - name: jwt
         config:
           key_claim_name: "iss"  # Utilise `iss` comme identifiant unique
@@ -39,6 +46,9 @@ services:
         paths:
           - /livraison
     plugins:
+      - name: cors
+        config:
+          origins: [ "*" ]
       - name: jwt
         config:
           key_claim_name: "iss"
@@ -59,6 +69,9 @@ services:
         paths:
           - /kitchen
     plugins:
+      - name: cors
+        config:
+          origins: [ "*" ]
       - name: jwt
         config:
           key_claim_name: "iss"

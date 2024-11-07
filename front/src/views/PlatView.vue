@@ -3,10 +3,17 @@ import { onMounted, ref } from 'vue';
 
 const dishes = ref([]);
 
+const token = localStorage.getItem('token');
+
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:8000/kitchen/api/dishes'); // Assurez-vous d'utiliser "http://" ou "https://"
-
+    const response = await fetch('http://localhost:8000/kitchen/api/dishes', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
