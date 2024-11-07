@@ -7,7 +7,7 @@ import { cors } from "hono/cors";
 const app = new Hono();
 await DbConnect();
 
-const port = 3001;
+const port = 3000;
 console.log(`Server is running on port ${port}`);
 
 app.use("/api/*", cors());
@@ -20,6 +20,7 @@ app.all("*", (c) => {
 });
 
 serve({
+  hostname: '0.0.0.0',
   fetch: app.fetch,
   port,
 });
