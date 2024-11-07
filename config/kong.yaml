@@ -3,15 +3,7 @@ services:
   - name: auth-service
     url: http://host.docker.internal:3000
     routes:
-      - name: auth-me-route
+      - name: auth-route
         paths:
-          - /api/auth/me
-        strip_path: false
-      - name: auth-login-route
-        paths:
-          - /api/auth/login
-        strip_path: false
-      - name: auth-register-route
-        paths:
-          - /api/auth/register
+          - /api/auth
         strip_path: false
