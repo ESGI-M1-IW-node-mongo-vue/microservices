@@ -30,6 +30,7 @@ api.post("/", async (c) => {
 });
 
 api.put("/:id", async (c) => {
+    console.log('lalalal')
     const _id = c.req.param("id");
     const body = await c.req.json();
     const tryToUpdate = await Order.findOneAndUpdate(
