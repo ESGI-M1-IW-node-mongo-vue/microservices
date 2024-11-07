@@ -1,0 +1,259 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Slide from "../components/Slide.astro";
+import CodeBlock from "../components/CodeBlock.astro";
+---
+
+<Layout title="My Awesome Talk Title">
+	<main class="reveal">
+		<div class="slides">
+			<Slide>
+				<h2>Microservices</h2>
+				<p>Une expérience intéressante</p>
+				<ul>
+					<li>Lucas Damian</li>
+					<li>Romain Grange</li>
+					<li>Ruddy Morel</li>
+					<li>Jules Poissonnet</li>
+				</ul>
+			</Slide>
+			<Slide>
+				<h2>L'architecture</h2>
+				<p>On a 4 services et une gateway</p>
+				<ul>
+					<li class="fragment">Un service "auth" de gestion des utilisateurs</li>
+					<li class="fragment">Un service "kitchen" qui gère les préparation de commandes</li>
+					<li class="fragment">Un service "order" qui gère les commandes</li>
+					<li class="fragment">Un service "livraison" 🇫🇷 qui s'occupe du lien avec les livreurs</li>
+					<li class="fragment">Une gateway en nginx qui sert de garde</li>
+				</ul>
+			</Slide>
+			<Slide>
+				<h3>Communication avec les services</h3>
+				<ul>
+					<li class="fragment">
+						<code>le public</code> passe dans <code>la gateway</code> avant d'arriver sur un service
+					</li>
+					<li class="fragment">
+						<code>la gateway</code> redirige sur le bon service
+					</li>
+					<li class="fragment">
+						<code>la gateway</code> s'occupe d'enrichir les requêtes et de les router
+					</li>
+					<li class="fragment">
+						<code>les services</code> communiquent entre eux grâce à des ✨service_key✨
+					</li>
+				</ul>
+			</Slide>
+			<Slide>
+				<h3>La gateway - Nginx</h3>
+				<span class="code-container">
+	<pre
+		data-id={`code-pre-nginx`}><code data-id={`code-code-nginx`} class={`language-nginx`}
+																		 data-line-numbers="1|12-20|20|24" data-trim data-noescape>
+load_module /usr/lib/nginx/modules/ngx_http_auth_jwt_module.so;
+events &lcub;&rcub;
+http &lcub;
+		map $jwt_claim_role $role &lcub;
+				~^"(.*)"$ $1;
+				default $jwt_claim_role;
+		&rcub;
+		map $jwt_claim_sub $sub &lcub;
+				~^"(.*)"$ $1;
+				default $jwt_claim_sub;
+		&rcub;
+		server &lcub;
+				listen 80;
+				location / &lcub;
+						auth_jwt_key "pouetpouetpouet";
+						auth_jwt off;
+
+						proxy_set_header X-User $sub;
+						proxy_set_header X-Role $role;
+						proxy_pass http://front:80/;
+
+						location /api &lcub;
+								location /api/orders &lcub;
+										proxy_pass http://orders:3000/api/orders;
+								&rcub;
+
+								location /api/livraison &lcub;
+										proxy_pass http://livraison:3000/api/livraison;
+								&rcub;
+
+								location /api/kitchen &lcub;
+										proxy_pass http://kitchen:3000/api/kitchen;
+								&rcub;
+
+								location /api/auth &lcub;
+										proxy_pass http://auth:3001/api/auth;
+								&rcub;
+
+						&rcub;
+				&rcub;
+		&rcub;
+&rcub;
+	</code></pre>
+</span>
+			</Slide>
+			<Slide>
+				<h2>🐳Docker</h2>
+				<pre
+					data-id={`code-pre-yaml`}><code data-id={`code-code-yaml`} class={`language-yaml`}
+																					data-line-numbers="1|2,9,16,30,37,44|6-8,13-15,20-21,27-29,34-36,41-43|16-29"
+																					data-trim data-noescape>
+services:
+  auth:
+    build:
+      context: ./back/auth
+    container_name: auth
+    volumes:
+      - ./back/auth/:/app/
+      - /app/node_modules
+  front:
+    build:
+      context: ./front
+    container_name: front
+    volumes:
+      - ./front/:/app/
+      - /app/node_modules
+  nginx:
+    image: ghcr.io/max-lt/nginx-jwt-module:latest
+    platform: linux/x86_64
+    container_name: nginx
+    volumes:
+      - ./back/gateway/:/etc/nginx/
+    links:
+      - auth
+      - orders
+      - livraison
+      - kitchen
+      - front
+    ports:
+      - "80:80"
+  orders:
+    build:
+      context: ./back/orders
+    container_name: orders
+    volumes:
+      - ./back/orders/:/app/
+      - /app/node_modules
+  livraison:
+    build:
+      context: ./back/livraison
+    container_name: livraison
+    volumes:
+      - ./back/livraison/:/app/
+      - /app/node_modules
+  kitchen:
+    build:
+      context: ./back/kitchen
+    container_name: kitchen
+    volumes:
+      - ./back/kitchen/:/app/
+      - /app/node_modules
+				</code></pre>
+			</Slide>
+			<Slide>
+				<h3>🐳Docker ça marche<small>(pas)</small> partout</h3>
+	<pre
+		data-id={`code-pre-markdown`}><code style="white-space: inherit" data-id={`code-code-markdown`} class={`language-markdown`}
+																		 data-line-numbers="1,10" data-trim data-noescape>
+					{`
+					Error: Cannot find module @rollup/rollup-linux-x64-gnu. npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828). Please try npm i again after removing both package-lock.json and node_modules directory.
+					     at requireWithFriendlyError (/usr/src/app/node_modules/rollup/dist/native.js:87:9)
+					     at Object.<anonymous> (/usr/src/app/node_modules/rollup/dist/native.js:96:48)
+					     ... 3 lines matching cause stack trace ...
+					     at Module._load (node:internal/modules/cjs/loader:1023:12)
+					     at cjsLoader (node:internal/modules/esm/translators:345:17)
+					     at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:294:7)
+						     at ModuleJob.run (node:internal/modules/esm/module_job:218:25)
+						     at async ModuleLoader.import (node:internal/modules/esm/loader:329:24) {
+							   [cause]: Error: Cannot find module '@rollup/rollup-linux-x64-gnu'
+							   Require stack:
+							   - /usr/src/app/node_modules/rollup/dist/native.js
+							       at Module._resolveFilename (node:internal/modules/cjs/loader:1144:15)
+							       at Module._load (node:internal/modules/cjs/loader:985:27)
+							       at Module.require (node:internal/modules/cjs/loader:1235:19)
+							       at require (node:internal/modules/helpers:176:18)
+							       at requireWithFriendlyError (/usr/src/app/node_modules/rollup/dist/native.js:69:10)
+							       at Object.<anonymous> (/usr/src/app/node_modules/rollup/dist/native.js:96:48)
+								       at Module._compile (node:internal/modules/cjs/loader:1376:14)
+								       at Module._extensions..js (node:internal/modules/cjs/loader:1435:10)
+								       at Module.load (node:internal/modules/cjs/loader:1207:32)
+								       at Module._load (node:internal/modules/cjs/loader:1023:12) {
+									     code: 'MODULE_NOT_FOUND',
+									     requireStack: [ '/usr/src/app/node_modules/rollup/dist/native.js' ]
+									   }
+								 }
+								 `}
+	</code></pre>
+			</Slide>
+			<Slide>
+				<h3>✨La solution <small>idéale & théorique</small></h3>
+				<div class="column">
+					<pre
+						data-id={`code-pre-md`}><code style="white-space: inherit" data-id={`code-code-md`}
+																						class={`language-md`}
+																						data-line-numbers="1,10" data-trim data-noescape>
+									{`
+									# Dockerfile de production
+									Pas de volume, du build de prod
+									`}
+								</code></pre>
+					<pre
+						data-id={`code-pre-md`}><code style="white-space: inherit" data-id={`code-code-md`}
+																						class={`language-md`}
+																						data-line-numbers="1,10" data-trim data-noescape>
+									{`
+									# Dockerfile de dev
+									Volume, build de dev, watch sur les fichiers
+									`}
+								</code></pre>
+				</div>
+			</Slide>
+			<Slide>
+				<h3>Présentation du register</h3>
+				<iframe style="background-color: white"
+								src="http://localhost/register" width="100%" height="700px"></iframe>
+			</Slide>
+			<Slide>
+				<h3>Présentation du login</h3>
+				<iframe style="background-color: white"
+								src="http://localhost/login" width="100%" height="700px"></iframe>
+			</Slide>
+			<Slide>
+				<h3>Ce qu'on retient de cette lecon 📒</h3>
+				<ul>
+					<li class="fragment">On aurait du finir par la gateway</li>
+				</ul>
+			</Slide>
+		</div>
+	</main>
+</Layout>
+
+<style is:global>
+	.column {
+		display: flex;
+		flex-direction: column;
+		justify-items: space-between;
+		gap: 1rem;
+	}
+	.reveal .code-wrapper {
+		display: flex;
+		width: fit-content;
+		background-color: #272822;
+		border-radius: 0.5em;
+		max-height: 82vh;
+		overflow: auto;
+		line-height: 1.2;
+		position: relative;
+		margin: 0;
+
+		& > code {
+			width: fit-content;
+			overflow: hidden;
+			padding: 2em;
+		}
+	}
+</style>
