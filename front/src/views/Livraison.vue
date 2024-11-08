@@ -122,7 +122,7 @@ const getReadyOrders = async function () {
   await fetch('http://127.0.0.1:8000/livraison/api/order/ready',{
     method:"get",
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   }).then(async(res) => {
     ordersReady.value = await res.json()
@@ -133,7 +133,7 @@ const getIsInDeliveryOrders = async function () {
   await fetch('http://127.0.0.1:8000/livraison/api/order/isindelivery',{
     method:"get",
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   }).then(async(res) => {
     ordersisInDelivery.value = await res.json()
@@ -144,7 +144,7 @@ const getDeliveredOrders = async function () {
   await fetch('http://127.0.0.1:8000/livraison/api/order/delivered',{
     method:"get",
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   }).then(async(res) => {
     ordersDelivered.value = await res.json()
@@ -169,7 +169,7 @@ const takeOrder = async function (orderId){
     method:"put",
     body:JSON.stringify({"status":"isindelivery"}),
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   })
   setTimeout(() => {
@@ -184,7 +184,7 @@ const orderIsDelivered = async function (orderId){
     method:"put",
     body:JSON.stringify({"status":"delivered"}),
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   })
   setTimeout(() => {
@@ -202,7 +202,7 @@ const addOrder = async function (){
     method:"post",
     body:data,
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   })
   setTimeout(() => {
@@ -214,7 +214,7 @@ const removeOrder = async function(orderId){
   await fetch(`http://127.0.0.1:8000/livraison/api/order/${orderId}`,{
     method:"delete",
     headers: {
-      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjZkZWY3MWVkM2Q3NGVhMzNmMjBjMWJlIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzMyNTJ9.0a5s-SEUbGv8uSqKKjCmQ6cu7ygqPI8jdQYHJe8LHU8"
+      Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo"
     }
   })
   setTimeout(() => {

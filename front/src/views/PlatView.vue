@@ -9,7 +9,7 @@ const newDish = ref({
 });
 const ingredient = ref(''); // Variable pour ajouter un nouvel ingrédient
 
-const token = localStorage.getItem('token') ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzEwNzY0ODF9.WmZGMyfbiaTd7Xj0Av4TyWCK8a0aJP05YVx8gsmXb20";
+const token = localStorage.getItem('token') ?? "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhdXRoIiwic3ViIjoiNjcyY2MyYTNmYThlODZmYTUyMmI5OTgzIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MzExMzcwNjR9.G6uZ-_E8rfN-vPxM5xvbH--j_7AzUjYRU5yikiQJMdo";
 console.log('👋',token)
 // Fonction pour récupérer les plats existants
 const fetchDishes = async () => {
