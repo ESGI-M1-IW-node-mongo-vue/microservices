@@ -97,6 +97,10 @@ http &lcub;
 </span>
 			</Slide>
 			<Slide>
+				<h2 class="r-fit-text">Tout ça pour utiliser Kong 🤦</h2>
+				<img style="height: 200px" src="https://www.svgrepo.com/show/353978/kong-icon.svg"/>
+			</Slide>
+			<Slide>
 				<h2>🐳Docker</h2>
 				<pre
 					data-id={`code-pre-yaml`}><code data-id={`code-code-yaml`} class={`language-yaml`}
@@ -213,19 +217,25 @@ services:
 				</div>
 			</Slide>
 			<Slide>
-				<h3>Présentation du register</h3>
+				<h3>Page de login</h3>
 				<iframe style="background-color: white"
-								src="http://localhost/register" width="100%" height="700px"></iframe>
+						src="http://localhost:5173/login" width="100%" height="500px"></iframe>
 			</Slide>
 			<Slide>
-				<h3>Présentation du login</h3>
+				<h3>Liste des plats</h3>
 				<iframe style="background-color: white"
-								src="http://localhost/login" width="100%" height="700px"></iframe>
+								src="http://localhost:5173/plats" width="100%" height="500px"></iframe>
 			</Slide>
 			<Slide>
-				<h3>Ce qu'on retient de cette lecon 📒</h3>
+				<h3>POV du livreur</h3>
+				<iframe style="background-color: white"
+								src="http://localhost:5173/livraison" width="100%" height="500px"></iframe>
+			</Slide>
+			<Slide>
+				<h3 class="r-fit-text">Ce qu'on retient de cette lecon 📒</h3>
 				<ul>
 					<li class="fragment">On aurait du finir par la gateway</li>
+					<li class="fragment">On aurait du commencer par le front pour penser le back</li>
 				</ul>
 			</Slide>
 		</div>

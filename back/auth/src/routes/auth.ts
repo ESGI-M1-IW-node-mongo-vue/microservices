@@ -49,6 +49,7 @@ api.post("/login", async (c) => {
     }
 
     const payload = {
+      iss: "auth",
       sub: user._id,
       role: "user",
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,

@@ -8,6 +8,18 @@ api.get("/", async (c) => {
     return c.json(await Order.find().sort({ name: 1 }));
 });
 
+api.get("/ready", async (c) => {
+    return c.json(await Order.find({ status: "ready" }).sort({ name: 1 }));
+});
+
+api.get("/isindelivery", async (c) => {
+    return c.json(await Order.find({ status: "isindelivery" }).sort({ name: 1 }));
+});
+
+api.get("/delivered", async (c) => {
+    return c.json(await Order.find({ status: "delivered" }).sort({ name: 1 }));
+});
+
 api.get("/:id", async (c) => {
     const _id = c.req.param("id");
 
@@ -30,6 +42,7 @@ api.post("/", async (c) => {
 });
 
 api.put("/:id", async (c) => {
+    console.log('lalalal')
     const _id = c.req.param("id");
     const body = await c.req.json();
     const tryToUpdate = await Order.findOneAndUpdate(
